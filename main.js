@@ -1,3 +1,26 @@
+const express = require('express');
+const app = express();
+const connection = require('./lib/db.js');
+const topic = require('./lib/topic.js');
+const author = require ('./lib/author.js');
+connection.connect();
+
+app.get('/', (request, response) => {
+	topic.home(request, response);
+});
+app.get('/page/:id', (request, response) => {
+	topic.page(request, response);
+});
+app.get('/create', (request, response) => {
+	topic.create(request, response);
+});
+app.get('/create_process', (request, response) => {
+	topic.create_process(request, response);
+});
+app.listen(3000, () =>{
+	console.log("example app listening on port 3000!");
+})
+/*
 const http = require('http');
 const url = require('url');
 const connection = require('./lib/db.js');
@@ -53,3 +76,4 @@ const app = http.createServer((request, response) => {
 	}
 });
 app.listen(3000);
+*/
