@@ -1,10 +1,14 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
 const connection = require('./lib/db.js');
 const topic = require('./lib/topic.js');
 const author = require ('./lib/author.js');
 connection.connect();
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.get('/page/null', (request, response) => response.status(204));
+app.get('/favicon.ico', (req, res) => res.status(204));
 app.get('/', (request, response) => {
 	topic.home(request, response);
 });
@@ -14,9 +18,20 @@ app.get('/page/:id', (request, response) => {
 app.get('/create', (request, response) => {
 	topic.create(request, response);
 });
-app.get('/create_process', (request, response) => {
+app.post('/create_process', (request, response) => {
 	topic.create_process(request, response);
 });
+app.get('/update/:update_id', (request, response) => {
+	const p = request.params.update_id;
+	topic.update(request, response, p); 
+});
+app.post('/update_process', (request, response) => {
+	topic.update_process(request, response);
+});
+app.post('/delete_process', (request, response) => {
+	topic.delete_process(request, response);
+});
+
 app.listen(3000, () =>{
 	console.log("example app listening on port 3000!");
 })
