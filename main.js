@@ -7,8 +7,10 @@ const author = require ('./lib/author.js');
 connection.connect();
 
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static('images')); // images 폴더의 정적인 파일들을 서비스 가능하게 된다.
 app.get('/page/null', (request, response) => response.status(204));
 app.get('/favicon.ico', (req, res) => res.status(204));
+
 app.get('/', (request, response) => {
 	topic.home(request, response);
 });
@@ -32,9 +34,21 @@ app.post('/delete_process', (request, response) => {
 	topic.delete_process(request, response);
 });
 
+app.use((request, response, next) => {
+	response.status(404).send("Sorry, can't find that");
+});
+
+// 어떤 미들웨어에서 next의 인자로 err가 넘어오게 되면, next의 다음 동작으로 수행되는 미들웨어는
+// 인자가 4개인 미들웨어를 호출하도록 약속되어 있다.
+// 따라서 여기에 Error Handling 을 하면 된다.
+app.use((err, request, response, next) => { 
+	console.err(err.stack);
+	response.status(500).send("Something Broke");
+})
+
 app.listen(3000, () =>{
 	console.log("example app listening on port 3000!");
-})
+});
 /*
 const http = require('http');
 const url = require('url');
