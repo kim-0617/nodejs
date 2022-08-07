@@ -9,6 +9,8 @@ connection.connect();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('images')); // images 폴더의 정적인 파일들을 서비스 가능하게 된다.
 app.get('/page/null', (request, response) => response.status(204));
+app.get('/create/null', (request, response) => response.status(204));
+app.get('/update/null', (request, response) => response.status(204));
 app.get('/favicon.ico', (req, res) => res.status(204));
 
 app.get('/', (request, response) => {
@@ -24,8 +26,7 @@ app.post('/create_process', (request, response) => {
 	topic.create_process(request, response);
 });
 app.get('/update/:update_id', (request, response) => {
-	const p = request.params.update_id;
-	topic.update(request, response, p); 
+	topic.update(request, response);
 });
 app.post('/update_process', (request, response) => {
 	topic.update_process(request, response);
