@@ -3,7 +3,9 @@ const app = express();
 const bodyParser = require('body-parser');
 const connection = require('./lib/db.js');
 const topic = require('./lib/topic.js');
-const author = require ('./lib/author.js');
+const author = require('./lib/author.js');
+const session = require('express-session');
+const FileStore = require('session-file-store')(session);
 connection.connect();
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -14,6 +16,14 @@ app.get('/create/null', (request, response) => response.status(204));
 app.get('/update/null', (request, response) => response.status(204));
 app.get('/author/update/null', (request, response) => response.status(204));
 app.get('/favicon.ico', (req, res) => res.status(204));
+
+app.use(session({
+	key: 'is_logined',
+	secret: 'mysecret',
+	resave: false,
+	saveUninitialized: false,
+	store: new FileStore(),
+}));
 
 app.get('/', (request, response) => {
 	topic.home(request, response);
@@ -76,7 +86,7 @@ app.use((request, response, next) => {
 // 	response.status(500).send("Something Broke");
 // });
 
-app.listen(3000, () =>{
+app.listen(3000, () => {
 	console.log("example app listening on port 3000~");
 });
 /*

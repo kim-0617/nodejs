@@ -6,14 +6,13 @@ const FileStore = require('session-file-store')(session);
 const app = express();
 
 app.use(session({
-    secret : `apsjfoisejfosjf`,
+    secret : `mysecret`,
     resave : false,
     saveUninitialized : true,
     store : new FileStore(),
 }));
 
 app.get('/', (request, response) => {
-    console.log(request.session);
     if(request.session.num === undefined){
         request.session.num = 1;
     }
