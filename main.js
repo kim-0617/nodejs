@@ -7,6 +7,7 @@ const author = require('./lib/author.js');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const flash = require('connect-flash');
+
 connection.connect();
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -28,13 +29,7 @@ app.use(session({
 
 app.use(flash());
 
-const authData = {
-	email: `egoing777@gmail.com`,
-	password: `111111`,
-	nickname: `egoing`,
-}
-
-const passport = require('./lib/passport')(app, authData);
+const passport = require('./lib/passport')(app);
 
 app.get('/', (request, response) => {
 	topic.home(request, response);
@@ -69,6 +64,12 @@ app.get('/logout_process', (request, response) => {
 	topic.logout_process(request, response);
 });
 */
+app.get('/register', (request, response) => {
+	topic.register(request, response);
+});
+app.post('/register_process', (request, response) => {
+	topic.register_process(request, response);
+});
 app.get('/page/:id', (request, response) => {
 	topic.page(request, response);
 });
