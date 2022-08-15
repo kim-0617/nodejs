@@ -32,7 +32,6 @@ app.use(flash());
 const passport = require('./lib/passport')(app);
 
 app.get('/', (request, response) => {
-	console.log(request.user)
 	topic.home(request, response);
 });
 app.get('/login', (request, response) => {
